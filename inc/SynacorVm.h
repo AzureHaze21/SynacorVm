@@ -1,0 +1,143 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <cstring>
+
+using uint16 = unsigned short;
+
+#define IS_REG(x)		((x) > (uint16)0x7FFF)
+#define IS_VALID_VALUE(x)	((x) < (uint16)0x8000)
+#define IS_VALID_OPCODE(x)	((x) > (uint16)0x0000 && (x) < (uint16)0x16)
+#define OPCODE_COUNT		22
+#define STACK_MAX		0x1000
+
+class SynacorVm
+{
+private:
+	
+	uint16 registers[8]{ 0 };
+	std::size_t ip = 0;
+	int sp = -1;
+	short stack[0x1000]{ 0 };
+	std::vector<uint16> memory;
+	bool isRunning{ true };
+
+private:
+
+	uint16 getMemory(uint16 val) {
+		return IS_REG(val) ? registers[val - (uint16)0x8000] : val;
+	}
+
+	void setRegValue(uint16 a, uint16 val) {
+		if (IS_REG(a) && IS_VALID_VALUE(val)) registers[a - (uint16)0x8000] = val;
+	}
+
+public:
+
+	SynacorVm() {}
+	virtual ~SynacorVm() { stop(); }
+
+	void start() {
+		while (isRunning && ip < memory.size()) {
+			uint16 op = memory[ip++];
+			if (IS_VALID_OPCODE(op)) {
+				(this->*jmpTable[op])();
+			}
+			else {
+				printf("Invalid instruction 0x%x at address 0x%04lx\n", op, ip - 1);
+				stop();
+			}
+		}
+	}
+	
+	void stop() noexcept {
+		isRunning = false;
+		std::cout << "Shutting down virtual machine" << std::endl;
+	}
+
+	void reset() {
+		std::memset(registers, 0, sizeof(registers) / sizeof(uint16));
+		memory.clear();
+		ip = 0;
+		sp = -1;
+	}
+
+       	bool load(const char *path)
+	{
+		reset();
+
+		std::ifstream program(path, std::ios::binary | std::ios::ate);
+		if (!program) {
+			std::cerr << "Error loading program" << std::endl;
+			return false;
+		}
+
+		auto binSize = program.tellg();
+		std::vector<unsigned char> buffer(binSize);
+		program.seekg(0, std::ios::beg);
+		program.read((char*)&buffer[0], binSize);
+		memory.resize((binSize / 2) + 1);
+		std::memcpy(&memory[0], &buffer[0], binSize);
+		
+		return true;
+	}
+
+	bool load(std::vector<uint16>&& program)
+	{
+		reset();
+		std::swap(program, memory);
+
+		return true;
+	}
+	
+private:
+
+	void HALT();
+	void SET();
+	void PUSH();
+	void POP();
+	void EQ();
+	void GT();
+	void JMP();
+	void JT();
+	void JF();
+	void ADD();
+	void MULT();
+	void MOD();
+	void AND();
+	void OR();
+	void NOT();
+	void RMEM();
+	void WMEM();
+	void CALL();
+	void RET();
+	void OUT();
+	void IN();
+	void NOOP();
+		
+        void (SynacorVm::*jmpTable[OPCODE_COUNT])(void) =
+	{
+		&SynacorVm::HALT,
+		&SynacorVm::SET,
+		&SynacorVm::PUSH,
+		&SynacorVm::POP,
+		&SynacorVm::EQ,
+		&SynacorVm::GT,
+		&SynacorVm::JMP,
+		&SynacorVm::JT,
+		&SynacorVm::JF,
+		&SynacorVm::ADD,
+		&SynacorVm::MULT,
+		&SynacorVm::MOD,
+		&SynacorVm::AND,
+		&SynacorVm::OR,
+		&SynacorVm::NOT,
+		&SynacorVm::RMEM,
+		&SynacorVm::WMEM,
+		&SynacorVm::CALL,
+		&SynacorVm::RET,
+		&SynacorVm::OUT,
+		&SynacorVm::IN,
+		&SynacorVm::NOOP
+	};
+};
