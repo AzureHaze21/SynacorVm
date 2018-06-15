@@ -131,9 +131,7 @@ void SynacorVm::CALL()
 
 void SynacorVm::RET()
 {
-	if (sp < 0)
-		HALT();
-
+	if (sp < 0) HALT();
 	uint16 a = stack[sp--];
 	ip = a;
 }
