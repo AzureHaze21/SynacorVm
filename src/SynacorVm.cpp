@@ -75,7 +75,7 @@ void SynacorVm::MULT()
 	uint16 a = memory[ip++];
 	uint16 b = getMemory(memory[ip++]);
 	uint16 c = getMemory(memory[ip++]);
-	setRegValue(a, (b * c) % 0x8000);
+	setRegValue(a, (b * c) % (uint16)0x8000);
 }
 
 void SynacorVm::MOD()
@@ -83,7 +83,7 @@ void SynacorVm::MOD()
 	uint16 a = memory[ip++];
 	uint16 b = getMemory(memory[ip++]);
 	uint16 c = getMemory(memory[ip++]);
-	setRegValue(a, (b % c) % 0x8000);
+	setRegValue(a, (b % c) % (uint16)0x8000);
 }
 
 void SynacorVm::AND()
@@ -106,7 +106,7 @@ void SynacorVm::NOT()
 {		
 	uint16 a = memory[ip++];
 	uint16 b = getMemory(memory[ip++]);
-	setRegValue(a, b ^ 0x7FFF);
+	setRegValue(a, b ^ (uint16)0x7FFF);
 }
 
 void SynacorVm::RMEM()
