@@ -1,10 +1,3 @@
-/*
-** EPITECH PROJECT, 
-** 
-** (c) 2018 by Paul Young (paul.young@epitech.eu)
-** 
-*/
-
 #include "SynacorVm.h"
 
 int main(int argc, char **argv)
