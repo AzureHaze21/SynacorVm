@@ -18,7 +18,7 @@ private:
 	uint16 registers[8]{ 0 };
 	std::size_t ip = 0;
 	int sp = -1;
-	short stack[0x1000]{ 0 };
+	short stack[STACK_MAX]{ 0 };
 	std::vector<uint16> memory;
 	bool isRunning{ true };
 
