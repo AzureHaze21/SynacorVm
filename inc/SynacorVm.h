@@ -10,7 +10,7 @@ using uint16 = unsigned short;
 
 #define IS_REG(x)		((x) > (uint16)0x7FFF)
 #define IS_VALID_VALUE(x)	((x) < (uint16)0x8000)
-#define IS_VALID_OPCODE(x)	((x) > (uint16)0x0000 && (x) < (uint16)0x16)
+#define IS_VALID_OPCODE(x)	((x) < (uint16)0x16)
 #define OPCODE_COUNT		22
 #define STACK_MAX		0x1000
 
