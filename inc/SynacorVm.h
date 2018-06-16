@@ -6,13 +6,9 @@
 #include <vector>
 #include <cstring>
 
-using uint16 = unsigned short;
+#include "constants.h"
 
-#define IS_REG(x)		((x) > (uint16)0x7FFF)
-#define IS_VALID_VALUE(x)	((x) < (uint16)0x8000)
-#define IS_VALID_OPCODE(x)	((x) < (uint16)0x16)
-#define OPCODE_COUNT		22
-#define STACK_MAX		0x1000
+using uint16 = unsigned short;
 
 class SynacorVm
 {
