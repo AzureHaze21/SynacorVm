@@ -55,7 +55,7 @@ public:
 	}
 
 	void reset() {
-		std::memset(registers, 0, sizeof(registers) / sizeof(uint16));
+		std::memset(registers, 0, sizeof(registers));
 		memory.clear();
 		ip = 0;
 		sp = -1;
