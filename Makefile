@@ -5,6 +5,7 @@ CC	= g++
 RM	= rm -f
 
 SRCS	= ./src/SynacorVm.cpp \
+	  ./src/SynacorDisassembler.cpp \
 	  ./src/main.cpp 
 
 OBJS	= $(SRCS:.cpp=.o)
