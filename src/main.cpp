@@ -1,18 +1,19 @@
 #include "SynacorVm.h"
+#include "SyancorDisassembler.h"
 
 int main(int argc, char **argv)
 {
-	if (argc != 2) {
-		std::cerr << "Usage: ./synacorvm [file]" << std::endl;
-		return 1;
+	if (argc < 2)
+		return usage();
+	if (!strcmp(argv[1], "-h"))
+		return usage();
+	if (argc == 2) {
+		SynacorVm vm;
+		if (vm.load(argv[1])) vm.start();
+		else std::cerr << "Failed to run " << argv[1] << std::endl;
 	}
-
-	SynacorVm vm;
-	
-	if (vm.load(argv[1]))
-		vm.start();
-	else
-		std::cerr << "Failed to load " << argv[1] << std::endl;
-	
-	return 0;
+	else if (argc > 2 && !strcmp(argv[1], "-d")) {
+		SynacorDisassembler disasm;
+		disasm.disassemble(argv[2], argc == 3 ? "out.s" : argv[3]);
+	}
 }
