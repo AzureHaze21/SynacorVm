@@ -1,3 +1,6 @@
+
+#include <cstring>
+
 #include "SynacorDisassembler.h"
 
 void SynacorDisassembler::disassemble(const char *in, const char *out) 
@@ -43,7 +46,7 @@ void SynacorDisassembler::doDisassembly()
 			uint16 op = memory[i++];
 			auto opInfo = opcodes[op];
 
-			pos = snprintf(buffer, sizeof(buffer), "[0x%04x] %-5s", i - 1, opInfo.name);
+			pos = snprintf(buffer, sizeof(buffer), "[0x%04lux] %-5s", i - 1, opInfo.name);
 			for (std::size_t j = 0; j < opInfo.nargs; j++)
 			{
 				if (IS_REG(memory[i]))
