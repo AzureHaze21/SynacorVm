@@ -1,5 +1,18 @@
+#include <iostream>
+
 #include "SynacorVm.h"
 #include "SyancorDisassembler.h"
+
+int usage()
+{
+	std::cerr
+		<< "Usage: ./synacorvm <option> file"
+		<< std::endl
+		<< "\t-d src <dst> (disassemble binary, default to out.s)"
+		<< std::endl;
+
+	return 1;
+}
 
 int main(int argc, char **argv)
 {
