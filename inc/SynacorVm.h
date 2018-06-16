@@ -1,3 +1,6 @@
+#ifndef _SYNACORVM_H_
+#define _SYNACORVM_H_
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -141,3 +144,5 @@ private:
 		&SynacorVm::NOOP
 	};
 };
+
+#endif
