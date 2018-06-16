@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "SynacorVm.h"
-#include "SyancorDisassembler.h"
+#include "SynacorDisassembler.h"
 
 int usage()
 {
