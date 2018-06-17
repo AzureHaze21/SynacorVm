@@ -153,3 +153,16 @@ void SynacorVm::NOOP()
 {
 		
 }
+
+void SynacorVm::start() {
+	while (isRunning && ip < memory.size()) {
+		uint16 op = memory[ip++];
+		if (IS_VALID_OPCODE(op)) {
+			(this->*jmpTable[op])();
+		}
+		else {
+			printf("Invalid instruction 0x%x at address 0x%04lx\n", op, ip - 1);
+			stop();
+		}
+	}
+}
